@@ -1,0 +1,6 @@
+{
+  "name": "50 Free SaaS Tools",
+  "description": "A comprehensive suite of 50 daily-use SaaS utilities, calculators, and generators.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

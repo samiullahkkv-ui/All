@@ -1,0 +1,28 @@
+export type ToolCategory = 'Text Tools' | 'Developer' | 'Generators' | 'Calculators' | 'Converters' | 'Media Tools' | 'Document Tools' | 'Web Tools';
+
+export type ToolType = 'text' | 'generator' | 'calculator' | 'image_compressor' | 'image_converter' | 'text_to_pdf' | 'html_viewer' | 'url_shortener' | 'text_to_file' | 'pwa_generator' | 'web_to_app' | 'image_hosting';
+
+export interface ToolInput {
+  name: string;
+  label: string;
+  placeholder?: string;
+}
+
+export interface Tool {
+  id: string;
+  title: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  h1?: string;
+  intro?: string;
+  description: string;
+  category: ToolCategory;
+  icon: any; // Lucide icon component
+  type: ToolType;
+  inputs?: ToolInput[];
+  action: (...args: any[]) => string | number;
+  content?: string;
+  howToUse?: string[];
+  faq?: { question: string; answer: string }[];
+  relatedTools?: string[];
+}
