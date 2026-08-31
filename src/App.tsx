@@ -1,7 +1,7 @@
 import { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Zap, Heart, Download, Loader2 } from 'lucide-react';
+import { Zap, Heart, Moon, Sun, Loader2 } from 'lucide-react';
 
 const Home = lazy(() => import('./pages/Home'));
 const ToolPage = lazy(() => import('./pages/ToolPage'));
@@ -33,6 +33,26 @@ export default function App() {
 
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
+  // Dark Mode State
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    try {
+      const saved = localStorage.getItem('toolkit50_theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('toolkit50_theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
+
   useEffect(() => {
     localStorage.setItem('toolkit50_favs', JSON.stringify(favorites));
   }, [favorites]);
@@ -45,21 +65,6 @@ export default function App() {
     setFavorites(prev => prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]);
   };
 
-  const handleDownloadBackup = () => {
-    const data = {
-      favorites,
-      usageHistory,
-      exportDate: new Date().toISOString()
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'toolkit50-backup.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
   // Scroll to top on navigation
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -68,7 +73,7 @@ export default function App() {
   const isHome = location.pathname === '/';
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans selection:bg-indigo-200">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col font-sans selection:bg-indigo-200 dark:selection:bg-indigo-900 transition-colors duration-200">
       {/* Fallback Helmet for overall site when not overridden by pages */}
       <Helmet>
         <title>50+ Free Daily SaaS Tools - Ultimate Utility Kit</title>
@@ -76,7 +81,7 @@ export default function App() {
       </Helmet>
 
       {/* Header - 3D Glassmorphism */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 shadow-sm transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link 
             to="/"
@@ -87,8 +92,8 @@ export default function App() {
               <Zap className="w-5 h-5 text-white drop-shadow-md" />
             </div>
             <div>
-              <h1 className="font-bold text-xl text-gray-900 tracking-tight leading-none group-hover:text-indigo-600 transition-colors">ToolKit50</h1>
-              <span className="text-xs font-semibold text-indigo-500 uppercase tracking-wider">Ultimate Utility</span>
+              <h1 className="font-bold text-xl text-gray-900 dark:text-white tracking-tight leading-none group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">ToolKit50</h1>
+              <span className="text-xs font-semibold text-indigo-500 dark:text-indigo-400 uppercase tracking-wider">Ultimate Utility</span>
             </div>
           </Link>
           
@@ -96,24 +101,24 @@ export default function App() {
             <Link 
               to="/" 
               onClick={() => setShowFavoritesOnly(false)} 
-              className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${!showFavoritesOnly && isHome ? 'bg-indigo-50 text-indigo-700 shadow-inner' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'}`}
+              className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${!showFavoritesOnly && isHome ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 shadow-inner' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'}`}
             >
               All Tools
             </Link>
             <Link 
               to="/" 
               onClick={() => setShowFavoritesOnly(true)} 
-              className={`flex items-center px-4 py-2 rounded-xl text-sm font-bold transition-all ${showFavoritesOnly && isHome ? 'bg-red-50 text-red-600 shadow-inner' : 'text-gray-500 hover:bg-red-50 hover:text-red-600'}`}
+              className={`flex items-center px-4 py-2 rounded-xl text-sm font-bold transition-all ${showFavoritesOnly && isHome ? 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 shadow-inner' : 'text-gray-500 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400'}`}
             >
-              <Heart className={`w-4 h-4 mr-2 ${showFavoritesOnly && isHome ? 'fill-red-500' : ''}`} /> 
+              <Heart className={`w-4 h-4 mr-2 ${showFavoritesOnly && isHome ? 'fill-red-500 dark:fill-red-400' : ''}`} /> 
               Favorites
             </Link>
             <button 
-              onClick={handleDownloadBackup}
-              title="Download Data Backup"
-              className="flex items-center justify-center w-9 h-9 rounded-xl text-gray-500 bg-gray-50 border border-gray-200 hover:bg-gray-100 hover:text-gray-900 transition-all shadow-sm"
+              onClick={() => setIsDarkMode(prev => !prev)}
+              title="Toggle Dark Mode"
+              className="flex items-center justify-center w-9 h-9 rounded-xl text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-all shadow-sm"
             >
-              <Download className="w-4 h-4" />
+              {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
           </nav>
         </div>
@@ -122,16 +127,16 @@ export default function App() {
       {/* Main Content */}
       <main className="flex-1 w-full">
         {isHome && (
-          <div className="bg-gradient-to-b from-white to-gray-50 border-b border-gray-100 py-16 text-center shadow-sm relative overflow-hidden">
+          <div className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 border-b border-gray-100 dark:border-gray-800 py-16 text-center shadow-sm relative overflow-hidden transition-colors duration-200">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-indigo-500/10 blur-[100px] rounded-full pointer-events-none"></div>
             <div className="max-w-4xl mx-auto px-4 relative z-10">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight drop-shadow-sm">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight drop-shadow-sm">
                 {showFavoritesOnly ? 'Your ' : 'Your daily '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500 drop-shadow-sm">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500 dark:from-indigo-400 dark:to-purple-400 drop-shadow-sm">
                   {showFavoritesOnly ? 'favorite tools.' : 'productivity toolkit.'}
                 </span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-500 mb-0 font-medium max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-0 font-medium max-w-2xl mx-auto">
                 {showFavoritesOnly 
                   ? "Quickly access your most-used utilities all in one place." 
                   : "A collection of 50+ fast, free, and local tools to help you with text, code, conversions, and more."}
@@ -142,8 +147,8 @@ export default function App() {
 
         <Suspense fallback={
           <div className="flex flex-col items-center justify-center py-32">
-            <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-4" />
-            <p className="text-gray-500 font-medium">Loading...</p>
+            <Loader2 className="w-10 h-10 text-indigo-500 dark:text-indigo-400 animate-spin mb-4" />
+            <p className="text-gray-500 dark:text-gray-400 font-medium">Loading...</p>
           </div>
         }>
           <Routes>
@@ -183,11 +188,11 @@ export default function App() {
       </main>
       
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-8 text-center text-sm font-medium text-gray-400 mt-auto shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)]">
+      <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-8 text-center text-sm font-medium text-gray-400 dark:text-gray-500 mt-auto shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)] transition-colors duration-200">
         <p>© {new Date().getFullYear()} ToolKit50. Fast, secure, and runs in your browser.</p>
-        <div className="flex justify-center gap-4 mt-4 text-indigo-500">
-          <Link to="/">Home</Link>
-          <a href="/sitemap.xml" target="_blank" rel="noreferrer">Sitemap</a>
+        <div className="flex justify-center gap-4 mt-4 text-indigo-500 dark:text-indigo-400">
+          <Link to="/" className="hover:text-indigo-600 dark:hover:text-indigo-300">Home</Link>
+          <a href="/sitemap.xml" target="_blank" rel="noreferrer" className="hover:text-indigo-600 dark:hover:text-indigo-300">Sitemap</a>
         </div>
       </footer>
     </div>

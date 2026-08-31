@@ -82,18 +82,18 @@ export default function ToolPage({ favorites, toggleFavorite, usageHistory, setU
 
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-500 mb-6 flex items-center space-x-2">
-          <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
+        <nav className="text-sm text-gray-500 dark:text-gray-400 mb-6 flex items-center space-x-2">
+          <Link to="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</Link>
           <span>→</span>
-          <Link to={`/category/${tool.category.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-indigo-600 transition-colors">{tool.category}</Link>
+          <Link to={`/category/${tool.category.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{tool.category}</Link>
           <span>→</span>
-          <span className="text-gray-900 font-medium">{tool.title}</span>
+          <span className="text-gray-900 dark:text-gray-200 font-medium">{tool.title}</span>
         </nav>
 
         {/* H1 and Intro */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-4">{h1}</h1>
-          <p className="text-lg text-gray-600">{intro}</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-4">{h1}</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300">{intro}</p>
         </div>
 
         {/* The Actual Tool */}
@@ -104,22 +104,22 @@ export default function ToolPage({ favorites, toggleFavorite, usageHistory, setU
         />
 
         {/* Content Section */}
-        <div className="mt-16 bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">What is {tool.title}?</h2>
-          <p className="text-gray-600 mb-8 leading-relaxed">
+        <div className="mt-16 bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm transition-colors duration-200">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">What is {tool.title}?</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
             {tool.description} Whether you are a professional or just need a quick utility, our free online {tool.title.toLowerCase()} provides accurate and instant results directly in your browser. No installation or registration is required. We prioritize your privacy by processing data locally whenever technically possible.
           </p>
 
-          <h3 className="text-xl font-bold text-gray-900 mb-4">How to Use {tool.title}</h3>
-          <ul className="list-decimal list-inside space-y-3 text-gray-600 mb-8">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">How to Use {tool.title}</h3>
+          <ul className="list-decimal list-inside space-y-3 text-gray-600 dark:text-gray-300 mb-8">
             <li>Open the {tool.title} page.</li>
             <li>Input your required values or text into the designated fields.</li>
             <li>Click the action button or let it calculate automatically.</li>
             <li>View or copy your results instantly.</li>
           </ul>
 
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Features</h3>
-          <ul className="list-disc list-inside space-y-3 text-gray-600 mb-8">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Features</h3>
+          <ul className="list-disc list-inside space-y-3 text-gray-600 dark:text-gray-300 mb-8">
             <li>Fast and accurate results.</li>
             <li>Completely free to use.</li>
             <li>Mobile-friendly and responsive design.</li>
@@ -128,12 +128,12 @@ export default function ToolPage({ favorites, toggleFavorite, usageHistory, setU
 
           {tool.faq && tool.faq.length > 0 && (
             <>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h3>
               <div className="space-y-4 mb-8">
                 {tool.faq.map((q, idx) => (
-                  <div key={idx} className="bg-gray-50 p-5 rounded-2xl">
-                    <h4 className="font-bold text-gray-900 mb-2">{q.question}</h4>
-                    <p className="text-gray-600 text-sm">{q.answer}</p>
+                  <div key={idx} className="bg-gray-50 dark:bg-gray-700 p-5 rounded-2xl transition-colors duration-200">
+                    <h4 className="font-bold text-gray-900 dark:text-white mb-2">{q.question}</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">{q.answer}</p>
                   </div>
                 ))}
               </div>
@@ -144,7 +144,7 @@ export default function ToolPage({ favorites, toggleFavorite, usageHistory, setU
         {/* Related Tools */}
         {relatedTools.length > 0 && (
           <div className="mt-16">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Related Tools</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Related Tools</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {relatedTools.map(t => {
                 const Icon = t.icon;
@@ -152,14 +152,14 @@ export default function ToolPage({ favorites, toggleFavorite, usageHistory, setU
                   <Link
                     key={t.id}
                     to={`/tools/${t.id}`}
-                    className="bg-white p-4 rounded-2xl border border-gray-100 hover:border-indigo-500 hover:shadow-md transition-all flex items-center space-x-3 group"
+                    className="bg-white dark:bg-gray-800 p-4 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-400 hover:shadow-md transition-all flex items-center space-x-3 group"
                   >
-                    <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                    <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center group-hover:bg-indigo-600 dark:group-hover:bg-indigo-500 group-hover:text-white transition-colors">
                       <Icon className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 text-sm">{t.title}</h4>
-                      <p className="text-xs text-gray-500 truncate w-32">{t.category}</p>
+                      <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{t.title}</h4>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate w-32">{t.category}</p>
                     </div>
                   </Link>
                 );

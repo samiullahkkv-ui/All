@@ -1,6 +1,6 @@
 export type ToolCategory = 'Text Tools' | 'Developer' | 'Generators' | 'Calculators' | 'Converters' | 'Media Tools' | 'Document Tools' | 'Web Tools';
 
-export type ToolType = 'text' | 'generator' | 'calculator' | 'image_compressor' | 'image_converter' | 'text_to_pdf' | 'html_viewer' | 'url_shortener' | 'text_to_file' | 'pwa_generator' | 'web_to_app' | 'image_hosting';
+export type ToolType = 'custom' | 'text' | 'generator' | 'calculator' | 'image_compressor' | 'image_converter' | 'text_to_pdf' | 'html_viewer' | 'url_shortener' | 'text_to_file' | 'pwa_generator' | 'web_to_app' | 'image_hosting';
 
 export interface ToolInput {
   name: string;

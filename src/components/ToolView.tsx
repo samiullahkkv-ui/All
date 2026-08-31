@@ -1,3 +1,4 @@
+import GoogleDriveIntegration from "./GoogleDriveIntegration";
 import React, { useState, useEffect } from 'react';
 import { Tool } from '../types';
 import { ArrowLeft, Copy, Check, Heart, ExternalLink, Download } from 'lucide-react';
@@ -73,15 +74,15 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
 
   return (
     <div className="max-w-5xl mx-auto py-8">
-      <div className="bg-white rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border-b-4 border-gray-100 overflow-hidden relative">
-        <div className="p-8 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex justify-between items-start sm:items-center flex-col sm:flex-row gap-4">
+      <div className="bg-white dark:bg-gray-800 dark:bg-gray-800 rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] dark:shadow-none border-b-4 border-gray-100 dark:border-gray-900 overflow-hidden relative transition-colors duration-200">
+        <div className="p-8 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-800 flex justify-between items-start sm:items-center flex-col sm:flex-row gap-4 transition-colors duration-200">
           <div className="flex items-center">
             <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl flex items-center justify-center mr-6 shadow-[0_8px_16px_-6px_rgba(99,102,241,0.6)] border border-white/20">
               <Icon className="w-8 h-8 drop-shadow-md" />
             </div>
             <div>
-              <h2 className="text-xl font-extrabold text-gray-900 mb-1 tracking-tight">{tool.title} Interface</h2>
-              <p className="text-gray-500 font-medium text-sm">Enter your values below</p>
+              <h2 className="text-xl font-extrabold text-gray-900 dark:text-white dark:text-white mb-1 tracking-tight">{tool.title} Interface</h2>
+              <p className="text-gray-500 dark:text-gray-400 dark:text-gray-400 font-medium text-sm">Enter your values below</p>
             </div>
           </div>
           
@@ -90,8 +91,8 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
               onClick={onToggleFavorite}
               className={`flex items-center px-5 py-3 rounded-xl font-bold transition-all shadow-sm border ${
                 isFavorite 
-                ? 'bg-red-50 text-red-600 border-red-100 hover:bg-red-100' 
-                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                ? 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-100 dark:border-red-900/50 hover:bg-red-100 dark:hover:bg-red-900/50' 
+                : 'bg-white dark:bg-gray-800 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700'
               }`}
             >
               <Heart className={`w-5 h-5 mr-2 ${isFavorite ? 'fill-red-500' : ''}`} />
@@ -109,7 +110,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                 <textarea
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
-                  className="w-full h-72 p-5 bg-gray-50 border-2 border-transparent focus:border-indigo-500 rounded-2xl shadow-inner transition-all resize-none outline-none text-gray-800"
+                  className="w-full h-72 p-5 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-2xl shadow-inner transition-all resize-none outline-none text-gray-800"
                   placeholder="Type or paste your text here..."
                 />
               </div>
@@ -166,7 +167,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                       type="number"
                       value={calcInputs[input.name] === undefined ? '' : calcInputs[input.name]}
                       onChange={(e) => setCalcInputs({ ...calcInputs, [input.name]: parseFloat(e.target.value) || 0 })}
-                      className="block w-full px-5 py-4 bg-gray-50 border-2 border-transparent focus:border-indigo-500 rounded-2xl shadow-inner transition-all text-gray-900 font-bold outline-none text-lg"
+                      className="block w-full px-5 py-4 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-2xl shadow-inner transition-all text-gray-900 dark:text-white font-bold outline-none text-lg"
                       placeholder="Enter value..."
                     />
                   </div>
@@ -178,7 +179,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                 {output && (
                    <button 
                    onClick={() => handleCopy()}
-                   className="absolute top-4 right-4 p-2 bg-white/20 rounded-xl hover:bg-white/30 transition-colors"
+                   className="absolute top-4 right-4 p-2 bg-white dark:bg-gray-800/20 rounded-xl hover:bg-white dark:bg-gray-800/30 transition-colors"
                  >
                    {copied ? <Check className="w-5 h-5 text-white" /> : <Copy className="w-5 h-5 text-white" />}
                  </button>
@@ -195,7 +196,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                 type="url"
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
-                className="w-full px-5 py-5 bg-gray-50 border-2 border-transparent focus:border-indigo-500 rounded-2xl shadow-inner transition-all text-gray-900 font-medium outline-none text-lg mb-6"
+                className="w-full px-5 py-5 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-2xl shadow-inner transition-all text-gray-900 dark:text-white font-medium outline-none text-lg mb-6"
                 placeholder="https://very-long-url.com/..."
               />
               <button
@@ -234,7 +235,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-3">Live Preview</label>
-                <div className="w-full h-[500px] bg-white border-2 border-gray-200 rounded-2xl overflow-hidden shadow-inner">
+                <div className="w-full h-[500px] bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-inner">
                   <iframe 
                     srcDoc={textInput || '<html><body><h3 style="color:#9ca3af;font-family:sans-serif;text-align:center;margin-top:50px;">Preview will appear here</h3></body></html>'}
                     title="Live Preview" 
@@ -260,7 +261,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                 <select
                   value={selectedExt}
                   onChange={(e) => setSelectedExt(e.target.value)}
-                  className="flex-1 px-5 py-4 bg-gray-50 border-2 border-gray-200 focus:border-indigo-500 rounded-2xl outline-none font-bold text-gray-700"
+                  className="flex-1 px-5 py-4 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 focus:border-indigo-500 rounded-2xl outline-none font-bold text-gray-700"
                 >
                   <option value=".html">HTML Document (.html)</option>
                   <option value=".css">CSS Stylesheet (.css)</option>
@@ -327,7 +328,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
                   <div className="pointer-events-none">
-                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                    <div className="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
                       {loading ? (
                         <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
                       ) : (
@@ -339,9 +340,9 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                   </div>
                 </div>
               ) : (
-                <div className="bg-white border border-gray-200 rounded-3xl p-8 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.1)] text-left">
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl p-8 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.1)] text-left">
                   <p className="text-green-600 font-bold mb-4 text-lg text-center">Image Uploaded Successfully!</p>
-                  <div className="bg-gray-50 rounded-2xl p-4 mb-6 text-center border border-gray-100">
+                  <div className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-4 mb-6 text-center border border-gray-100">
                     <img src={output.toString()} alt="Uploaded" className="max-h-64 object-contain rounded-lg shadow-sm mx-auto" />
                   </div>
                   
@@ -349,21 +350,21 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                     <div>
                       <label className="block text-sm font-bold text-gray-700 mb-1">Direct URL</label>
                       <div className="flex">
-                        <input type="text" readOnly value={output.toString()} className="flex-1 px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-l-xl outline-none font-medium text-gray-800" />
+                        <input type="text" readOnly value={output.toString()} className="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-l-xl outline-none font-medium text-gray-800" />
                         <button onClick={() => handleCopy(output.toString())} className="px-5 py-3 bg-indigo-600 text-white rounded-r-xl font-bold hover:bg-indigo-700 transition-colors">Copy</button>
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-gray-700 mb-1">HTML Code</label>
                       <div className="flex">
-                        <input type="text" readOnly value={`<img src="${output.toString()}" alt="image" border="0">`} className="flex-1 px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-l-xl outline-none font-medium text-gray-800" />
+                        <input type="text" readOnly value={`<img src="${output.toString()}" alt="image" border="0">`} className="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-l-xl outline-none font-medium text-gray-800" />
                         <button onClick={() => handleCopy(`<img src="${output.toString()}" alt="image" border="0">`)} className="px-5 py-3 bg-indigo-600 text-white rounded-r-xl font-bold hover:bg-indigo-700 transition-colors">Copy</button>
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-gray-700 mb-1">Markdown</label>
                       <div className="flex">
-                        <input type="text" readOnly value={`![image](${output.toString()})`} className="flex-1 px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-l-xl outline-none font-medium text-gray-800" />
+                        <input type="text" readOnly value={`![image](${output.toString()})`} className="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-l-xl outline-none font-medium text-gray-800" />
                         <button onClick={() => handleCopy(`![image](${output.toString()})`)} className="px-5 py-3 bg-indigo-600 text-white rounded-r-xl font-bold hover:bg-indigo-700 transition-colors">Copy</button>
                       </div>
                     </div>
@@ -383,7 +384,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
               <textarea
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
-                className="w-full h-72 p-5 bg-gray-50 border-2 border-transparent focus:border-indigo-500 rounded-2xl shadow-inner transition-all resize-none outline-none text-gray-800 mb-6"
+                className="w-full h-72 p-5 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-2xl shadow-inner transition-all resize-none outline-none text-gray-800 mb-6"
                 placeholder="Type your content here..."
               />
               <button
@@ -436,7 +437,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
                 <div className="pointer-events-none">
-                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                  <div className="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
                     <Icon className="w-10 h-10 text-indigo-500" />
                   </div>
                   <h3 className="text-xl font-bold text-indigo-900 mb-2">Drop your image here</h3>
@@ -448,7 +449,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
                   <span className="font-bold text-gray-700">Convert to:</span>
                   <select 
-                    className="px-6 py-3 bg-white border-2 border-gray-200 rounded-xl focus:border-indigo-500 text-gray-700 font-bold outline-none shadow-sm"
+                    className="px-6 py-3 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:border-indigo-500 text-gray-700 font-bold outline-none shadow-sm"
                     onChange={(e) => {
                       const format = e.target.value;
                       const canvas = (window as any)._tempCanvas;
@@ -467,7 +468,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
               )}
               
               {output && typeof output === 'string' && output.startsWith('data:image') && (
-                <div className="bg-white border border-gray-200 rounded-3xl p-8 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.1)]">
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl p-8 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.1)]">
                   <p className="text-green-600 font-bold mb-4 text-lg">Image Ready!</p>
                   <div className="bg-gray-100 rounded-2xl p-4 mb-6 inline-block">
                     <img src={output} alt="Processed" className="max-h-64 object-contain rounded-lg shadow-sm" />
@@ -502,7 +503,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                     type="text"
                     value={pwaData.name}
                     onChange={e => setPwaData({...pwaData, name: e.target.value})}
-                    className="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
                   />
                 </div>
                 <div>
@@ -511,7 +512,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                     type="text"
                     value={pwaData.shortName}
                     onChange={e => setPwaData({...pwaData, shortName: e.target.value})}
-                    className="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -628,7 +629,7 @@ self.addEventListener('fetch', event => {
                     type="url"
                     value={webAppConfig.url}
                     onChange={e => setWebAppConfig({...webAppConfig, url: e.target.value})}
-                    className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
+                    className="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
                     placeholder="https://mywebsite.com"
                   />
                 </div>
@@ -638,7 +639,7 @@ self.addEventListener('fetch', event => {
                     type="text"
                     value={webAppConfig.name}
                     onChange={e => setWebAppConfig({...webAppConfig, name: e.target.value})}
-                    className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
+                    className="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
                     placeholder="My Store App"
                   />
                 </div>
@@ -648,7 +649,7 @@ self.addEventListener('fetch', event => {
                     type="text"
                     value={webAppConfig.pkg}
                     onChange={e => setWebAppConfig({...webAppConfig, pkg: e.target.value})}
-                    className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
+                    className="w-full px-5 py-4 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
                     placeholder="com.myname.app"
                   />
                 </div>
