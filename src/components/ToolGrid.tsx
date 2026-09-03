@@ -4,6 +4,7 @@ import { ToolCategory } from '../types';
 import { Search, Heart, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ToolPicture } from './ToolPicture';
+import { getToolIconMeta } from '../utils/toolIcons';
 
 interface ToolGridProps {
   favorites: string[];
@@ -63,8 +64,8 @@ export default function ToolGrid({ favorites, toggleFavorite, showFavoritesOnly 
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredTools.map(tool => {
-          const Icon = tool.icon;
           const isFav = favorites.includes(tool.id);
+          const { Icon: ToolIcon, badgeClasses } = getToolIconMeta(tool);
           
           return (
             <Link
@@ -83,6 +84,16 @@ export default function ToolGrid({ favorites, toggleFavorite, showFavoritesOnly 
                 >
                   <Heart className={`w-4 h-4 transition-colors ${isFav ? 'fill-red-500 text-red-500' : 'text-gray-400 dark:text-gray-400 group-hover:text-red-400'}`} />
                 </button>
+              </div>
+
+              {/* Representative Lucide Icon Above Title */}
+              <div className="flex items-center gap-2.5 mb-2.5 relative z-10 w-full">
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 border shadow-xs transition-transform duration-300 group-hover:scale-110 ${badgeClasses}`}>
+                  <ToolIcon className="w-4 h-4" />
+                </div>
+                <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400 tracking-wider uppercase truncate">
+                  {tool.category}
+                </span>
               </div>
               
               <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors relative z-10 w-full truncate break-words whitespace-normal">{tool.title}</h3>

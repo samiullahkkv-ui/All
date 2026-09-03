@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Download, ExternalLink, Sparkles, Image as ImageIcon, Send, Copy, AlertTriangle, Check, Hash, Stethoscope, Camera } from 'lucide-react';
 import { callAI } from '../utils/aiApi';
+import { GeminiChatbot } from './GeminiChatbot';
+import { AIGirlfriendWhatsApp } from './AIGirlfriendWhatsApp';
 
 const LANGUAGES = [
   'English', 'Urdu', 'Roman Urdu', 'Hindi', 'Arabic', 'Spanish', 
@@ -504,30 +506,11 @@ export const AIToolRenderer: React.FC<AIToolProps> = ({ toolType }) => {
   }
 
   if (toolType === 'ai_chatbot') {
-    return renderLayout(
-      <>
-        {renderLanguageSelect()}
-        <div className="mb-6">
-          <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Your Message</label>
-          <textarea 
-            className="w-full h-48 px-5 py-4 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-2xl outline-none resize-none shadow-inner text-gray-800 dark:text-gray-200"
-            placeholder="Type anything..."
-            value={input}
-            onChange={e => setInput(e.target.value)}
-          ></textarea>
-        </div>
-        <button 
-          onClick={() => {
-            const prompt = `Act as a helpful, smart general-purpose virtual assistant. Answer the user's message appropriately.\nIMPORTANT: You must respond entirely in this language: ${getActualLanguage()}.\nUser Message: ${input}`;
-            handleGenerate(prompt, false);
-          }}
-          disabled={loading || !input}
-          className="w-full py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl font-extrabold text-lg hover:from-indigo-700 hover:to-purple-700 transition-all shadow-[0_8px_20px_-6px_rgba(79,70,229,0.5)] hover:-translate-y-1 disabled:opacity-50 disabled:hover:translate-y-0 flex justify-center items-center"
-        >
-          {loading ? 'Thinking...' : <><Send className="w-5 h-5 mr-2" /> Send Message</>}
-        </button>
-      </>
-  );
+    return <GeminiChatbot />;
+  }
+
+  if (toolType === 'ai_girlfriend') {
+    return <AIGirlfriendWhatsApp />;
   }
 
   if (toolType === 'ai_health') {

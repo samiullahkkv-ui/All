@@ -7,7 +7,7 @@ import {
   LayoutTemplate, Link2, FileCode2, Smartphone, UploadCloud
 } from 'lucide-react';
 import { Tool } from './types';
-import { Lightbulb, Sparkles, Stethoscope, Video, MessageSquare, BrainCircuit } from 'lucide-react';
+import { Lightbulb, Sparkles, Stethoscope, Video, MessageSquare, BrainCircuit, Heart } from 'lucide-react';
 
 export const tools: Tool[] = [
   {
@@ -101,6 +101,19 @@ export const tools: Tool[] = [
     category: 'AI Tools',
     icon: MessageSquare,
     type: 'ai_chatbot',
+    action: () => ''
+  },
+  {
+    id: 'ai-girlfriend',
+    title: 'AI Girlfriend',
+    seoTitle: 'AI Girlfriend - Realistic WhatsApp Chat Companion',
+    seoDescription: 'Chat with 10 realistic AI girlfriends in a full-screen WhatsApp messaging interface powered by Gemini AI. Choose your favorite companion with unique personalities.',
+    h1: 'AI Girlfriend Virtual Companion',
+    intro: 'Choose from 10 distinct AI companions and chat in a realistic full-screen WhatsApp interface powered by Gemini AI.',
+    description: 'Select your virtual companion from 10 diverse personalities, view their profiles and DPs, and chat in a realistic, full-screen WhatsApp messaging layout powered by Gemini AI.',
+    category: 'AI Tools',
+    icon: Heart,
+    type: 'ai_girlfriend',
     action: () => ''
   },
   {

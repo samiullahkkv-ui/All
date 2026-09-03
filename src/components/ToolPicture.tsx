@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Tool } from '../types';
 import { getToolImage } from '../utils/toolImages';
+import { getToolIcon } from '../utils/toolIcons';
 import { Sparkles, ShieldCheck } from 'lucide-react';
 
 interface ToolPictureProps {
@@ -18,7 +19,7 @@ export const ToolPicture: React.FC<ToolPictureProps> = ({
 }) => {
   const [imageError, setImageError] = useState(false);
   const imageUrl = getToolImage(tool.id, tool.category, tool.image);
-  const Icon = tool.icon;
+  const Icon = getToolIcon(tool.id, tool.category, tool.icon);
 
   if (variant === 'banner') {
     return (

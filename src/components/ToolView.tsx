@@ -2,6 +2,7 @@ import GoogleDriveIntegration from "./GoogleDriveIntegration";
 import React, { useState, useEffect } from 'react';
 import { Tool } from '../types';
 import { getToolImage } from '../utils/toolImages';
+import { getToolIcon } from '../utils/toolIcons';
 import { AIToolRenderer } from './AITools';
 import { ArrowLeft, Copy, Check, Heart, ExternalLink, Download } from 'lucide-react';
 
@@ -72,7 +73,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
     setLoading(false);
   };
 
-  const Icon = tool.icon;
+  const Icon = getToolIcon(tool.id, tool.category, tool.icon);
 
   return (
     <div className="max-w-5xl mx-auto py-8">
@@ -92,7 +93,9 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
             </div>
             <div className="min-w-0">
               <h2 className="text-xl font-extrabold text-gray-900 dark:text-white mb-1 tracking-tight">{tool.title} Interface</h2>
-              <p className="text-gray-500 dark:text-gray-400 font-medium text-sm">Enter your values below</p>
+              <p className="text-gray-500 dark:text-gray-400 font-medium text-sm">
+                {tool.type === 'ai_girlfriend' ? 'Choose from 10 AI companions & chat on WhatsApp' : 'Enter your values below'}
+              </p>
             </div>
           </div>
           
@@ -111,7 +114,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
           )}
         </div>
 
-        <div className="p-8">
+        <div className={tool.type === 'ai_girlfriend' ? 'p-3 sm:p-6' : 'p-8'}>
           {/* AI TOOLS */}
           {tool.type.startsWith("ai_") && <AIToolRenderer toolType={tool.type} />}
 
