@@ -3,6 +3,7 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { tools } from '../toolsData';
 import ToolView from '../components/ToolView';
+import { ToolPicture } from '../components/ToolPicture';
 
 interface ToolPageProps {
   favorites: string[];
@@ -96,6 +97,9 @@ export default function ToolPage({ favorites, toggleFavorite, usageHistory, setU
           <p className="text-lg text-gray-600 dark:text-gray-300">{intro}</p>
         </div>
 
+        {/* Tool Preview Picture Banner */}
+        <ToolPicture tool={tool} variant="banner" />
+
         {/* The Actual Tool */}
         <ToolView 
           tool={tool} 
@@ -145,22 +149,17 @@ export default function ToolPage({ favorites, toggleFavorite, usageHistory, setU
         {relatedTools.length > 0 && (
           <div className="mt-16">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Related Tools</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
               {relatedTools.map(t => {
-                const Icon = t.icon;
                 return (
                   <Link
                     key={t.id}
                     to={`/tools/${t.id}`}
-                    className="bg-white dark:bg-gray-800 p-4 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-400 hover:shadow-md transition-all flex items-center space-x-3 group"
+                    className="bg-white dark:bg-gray-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-400 hover:shadow-md transition-all flex flex-col group overflow-hidden"
                   >
-                    <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center group-hover:bg-indigo-600 dark:group-hover:bg-indigo-500 group-hover:text-white transition-colors">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{t.title}</h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate w-32">{t.category}</p>
-                    </div>
+                    <ToolPicture tool={t} variant="card" className="h-28 mb-3" showCategoryBadge={false} />
+                    <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1">{t.title}</h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">{t.category}</p>
                   </Link>
                 );
               })}

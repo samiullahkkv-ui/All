@@ -1,6 +1,8 @@
 import GoogleDriveIntegration from "./GoogleDriveIntegration";
 import React, { useState, useEffect } from 'react';
 import { Tool } from '../types';
+import { getToolImage } from '../utils/toolImages';
+import { AIToolRenderer } from './AITools';
 import { ArrowLeft, Copy, Check, Heart, ExternalLink, Download } from 'lucide-react';
 
 interface ToolViewProps {
@@ -76,13 +78,21 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
     <div className="max-w-5xl mx-auto py-8">
       <div className="bg-white dark:bg-gray-800 dark:bg-gray-800 rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] dark:shadow-none border-b-4 border-gray-100 dark:border-gray-900 overflow-hidden relative transition-colors duration-200">
         <div className="p-8 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-800 flex justify-between items-start sm:items-center flex-col sm:flex-row gap-4 transition-colors duration-200">
-          <div className="flex items-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl flex items-center justify-center mr-6 shadow-[0_8px_16px_-6px_rgba(99,102,241,0.6)] border border-white/20">
-              <Icon className="w-8 h-8 drop-shadow-md" />
+          <div className="flex items-center gap-4">
+            <div className="relative w-16 h-16 rounded-2xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 flex-shrink-0 group">
+              <img 
+                src={getToolImage(tool.id, tool.category, tool.image)} 
+                alt={tool.title}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover" 
+              />
+              <div className="absolute inset-0 bg-black/25 flex items-center justify-center backdrop-blur-[1px]">
+                <Icon className="w-7 h-7 text-white drop-shadow" />
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl font-extrabold text-gray-900 dark:text-white dark:text-white mb-1 tracking-tight">{tool.title} Interface</h2>
-              <p className="text-gray-500 dark:text-gray-400 dark:text-gray-400 font-medium text-sm">Enter your values below</p>
+            <div className="min-w-0">
+              <h2 className="text-xl font-extrabold text-gray-900 dark:text-white mb-1 tracking-tight">{tool.title} Interface</h2>
+              <p className="text-gray-500 dark:text-gray-400 font-medium text-sm">Enter your values below</p>
             </div>
           </div>
           
@@ -102,10 +112,13 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
         </div>
 
         <div className="p-8">
+          {/* AI TOOLS */}
+          {tool.type.startsWith("ai_") && <AIToolRenderer toolType={tool.type} />}
+
           {/* TEXT TOOLS */}
           {tool.type === 'text' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
+              <div className="min-w-0">
                 <label className="block text-sm font-bold text-gray-700 mb-3">Input text</label>
                 <textarea
                   value={textInput}
@@ -113,8 +126,8 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                   className="w-full h-72 p-5 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-2xl shadow-inner transition-all resize-none outline-none text-gray-800"
                   placeholder="Type or paste your text here..."
                 />
-              </div>
-              <div>
+                </div>
+                <div className="min-w-0">
                 <div className="flex justify-between items-center mb-3">
                   <label className="block text-sm font-bold text-gray-700">Result output</label>
                   <button onClick={() => handleCopy()} className="text-indigo-600 hover:text-indigo-800 flex items-center text-sm font-bold bg-indigo-50 px-3 py-1.5 rounded-lg transition-colors">
@@ -224,7 +237,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
           {/* HTML VIEWER */}
           {tool.type === 'html_viewer' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
+              <div className="min-w-0">
                 <label className="block text-sm font-bold text-gray-700 mb-3">HTML/CSS/JS Code</label>
                 <textarea
                   value={textInput}
@@ -232,8 +245,8 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                   className="w-full h-[500px] p-5 bg-gray-900 border-2 border-gray-800 rounded-2xl shadow-inner transition-all resize-none outline-none text-green-400 font-mono text-sm selection:bg-indigo-500"
                   placeholder={`<style>\n  h1 { color: blue; }\n</style>\n\n<h1>Hello World!</h1>`}
                 />
-              </div>
-              <div>
+                </div>
+                <div className="min-w-0">
                 <label className="block text-sm font-bold text-gray-700 mb-3">Live Preview</label>
                 <div className="w-full h-[500px] bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-inner">
                   <iframe 
@@ -257,11 +270,11 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                 className="w-full h-72 p-5 bg-gray-900 border-2 border-gray-800 rounded-2xl text-green-400 font-mono text-sm resize-none shadow-inner outline-none mb-6"
                 placeholder="Type or paste your code/text here..."
               />
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <select
                   value={selectedExt}
                   onChange={(e) => setSelectedExt(e.target.value)}
-                  className="flex-1 px-5 py-4 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 focus:border-indigo-500 rounded-2xl outline-none font-bold text-gray-700"
+                  className="flex-1 px-5 py-4 bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 focus:border-indigo-500 rounded-2xl outline-none font-bold text-gray-700 dark:text-gray-200"
                 >
                   <option value=".html">HTML Document (.html)</option>
                   <option value=".css">CSS Stylesheet (.css)</option>
@@ -285,6 +298,9 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                   Download File
                 </button>
               </div>
+              <p className="text-center text-sm font-medium text-green-600 dark:text-green-400 flex items-center justify-center">
+                <Check className="w-4 h-4 mr-1.5" /> Your files are processed locally in your browser.
+              </p>
             </div>
           )}
 
@@ -396,10 +412,13 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                   doc.text(lines, 15, 20);
                   doc.save('document.pdf');
                 }}
-                className="w-full px-8 py-5 bg-red-600 text-white rounded-2xl font-extrabold hover:bg-red-700 transition-all shadow-[0_8px_20px_-6px_rgba(220,38,38,0.5)] hover:-translate-y-1"
+                className="w-full px-8 py-5 bg-red-600 text-white rounded-2xl font-extrabold hover:bg-red-700 transition-all shadow-[0_8px_20px_-6px_rgba(220,38,38,0.5)] hover:-translate-y-1 mb-4"
               >
                 Generate & Download PDF
               </button>
+              <p className="text-center text-sm font-medium text-green-600 dark:text-green-400 flex items-center justify-center">
+                <Check className="w-4 h-4 mr-1.5" /> Your files are processed locally in your browser.
+              </p>
             </div>
           )}
 
@@ -441,7 +460,10 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                     <Icon className="w-10 h-10 text-indigo-500" />
                   </div>
                   <h3 className="text-xl font-bold text-indigo-900 mb-2">Drop your image here</h3>
-                  <p className="text-indigo-600 font-medium">or click to browse from your device</p>
+                  <p className="text-indigo-600 font-medium mb-4">or click to browse from your device</p>
+                  <p className="text-center text-sm font-medium text-green-600 dark:text-green-400 flex items-center justify-center bg-green-50/50 dark:bg-green-900/20 py-2 rounded-xl w-max mx-auto px-4">
+                    <Check className="w-4 h-4 mr-1.5" /> Your files are processed locally in your browser.
+                  </p>
                 </div>
               </div>
 
@@ -480,6 +502,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                   >
                     Download Image
                   </a>
+                  <p className="text-center text-sm font-medium text-green-600 dark:text-green-400 mt-4 flex items-center justify-center"><Check className="w-4 h-4 mr-1.5" /> Your files are processed locally in your browser.</p>
                 </div>
               )}
             </div>
@@ -497,7 +520,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                <div>
+                <div className="min-w-0">
                   <label className="block text-sm font-bold text-gray-700 mb-2">App Name</label>
                   <input
                     type="text"
@@ -506,7 +529,7 @@ export default function ToolView({ tool, isFavorite, onToggleFavorite }: ToolVie
                     className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border-2 border-transparent focus:border-indigo-500 rounded-xl outline-none font-medium text-gray-800"
                   />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label className="block text-sm font-bold text-gray-700 mb-2">Short Name (for Home Screen)</label>
                   <input
                     type="text"
@@ -604,11 +627,14 @@ self.addEventListener('fetch', event => {
                   setLoading(false);
                 }}
                 disabled={loading}
-                className="w-full px-8 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl font-extrabold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:-translate-y-1 flex items-center justify-center disabled:opacity-70"
+                className="w-full px-8 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl font-extrabold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:-translate-y-1 flex items-center justify-center disabled:opacity-70 mb-4"
               >
                 <Download className="w-5 h-5 mr-2" />
                 {loading ? 'Generating...' : 'Download PWA Zip'}
               </button>
+              <p className="text-center text-sm font-medium text-green-600 dark:text-green-400 flex items-center justify-center">
+                <Check className="w-4 h-4 mr-1.5" /> Your files are processed locally in your browser.
+              </p>
             </div>
           )}
 
@@ -633,7 +659,7 @@ self.addEventListener('fetch', event => {
                     placeholder="https://mywebsite.com"
                   />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label className="block text-sm font-bold text-gray-700 mb-2">App Name</label>
                   <input
                     type="text"
@@ -643,7 +669,7 @@ self.addEventListener('fetch', event => {
                     placeholder="My Store App"
                   />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label className="block text-sm font-bold text-gray-700 mb-2">App Package Name</label>
                   <input
                     type="text"
@@ -795,11 +821,14 @@ dependencies {
                   setLoading(false);
                 }}
                 disabled={loading || !webAppConfig.url}
-                className="w-full px-8 py-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-extrabold hover:from-green-600 hover:to-emerald-700 transition-all shadow-lg hover:-translate-y-1 flex items-center justify-center disabled:opacity-70"
+                className="w-full px-8 py-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-extrabold hover:from-green-600 hover:to-emerald-700 transition-all shadow-lg hover:-translate-y-1 flex items-center justify-center disabled:opacity-70 mb-4"
               >
                 <Download className="w-5 h-5 mr-2" />
                 {loading ? 'Generating Project...' : 'Download Android Studio Project'}
               </button>
+              <p className="text-center text-sm font-medium text-green-600 dark:text-green-400 flex items-center justify-center">
+                <Check className="w-4 h-4 mr-1.5" /> Your files are processed locally in your browser.
+              </p>
             </div>
           )}
         </div>

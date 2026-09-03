@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://toolkit50.com/sitemap.xml
+Sitemap: https://alltool-phi.vercel.app/sitemap.xml

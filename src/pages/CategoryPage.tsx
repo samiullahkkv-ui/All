@@ -3,6 +3,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { tools } from '../toolsData';
 import ToolGrid from '../components/ToolGrid';
+import { ToolPicture } from '../components/ToolPicture';
 
 interface CategoryPageProps {
   favorites: string[];
@@ -58,23 +59,25 @@ export default function CategoryPage({ favorites, toggleFavorite }: CategoryPage
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{seoDescription}</p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {categoryTools.map(tool => {
-            const Icon = tool.icon;
-            const isFav = favorites.includes(tool.id);
             return (
               <Link
                 key={tool.id}
                 to={`/tools/${tool.id}`}
-                className="bg-white dark:bg-gray-800 rounded-3xl p-5 flex flex-col items-center justify-center text-center transition-all duration-300 border-b-4 border-gray-100 dark:border-gray-900 hover:border-indigo-500 dark:hover:border-indigo-400 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_-15px_rgba(99,102,241,0.5)] transform hover:-translate-y-2 cursor-pointer relative group"
+                className="bg-white dark:bg-gray-800 rounded-3xl p-4 sm:p-5 flex flex-col items-start transition-all duration-300 border-2 border-transparent hover:border-indigo-500 dark:border-gray-800 dark:hover:border-indigo-400 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(99,102,241,0.3)] transform hover:-translate-y-1 group relative overflow-hidden box-border min-w-0 w-full"
               >
-                <div className="w-14 h-14 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mb-3 shadow-[0_10px_20px_-10px_rgba(99,102,241,0.8)] border-t border-white/40 transform group-hover:scale-110 transition-transform duration-300">
-                  <Icon className="w-7 h-7 text-white drop-shadow-md" />
+                {/* Tool Picture on Top */}
+                <div className="w-full relative mb-4">
+                  <ToolPicture tool={tool} variant="card" className="h-40" />
                 </div>
-                <h3 className="font-bold text-gray-800 dark:text-gray-100 text-sm mb-1 leading-tight">{tool.title}</h3>
-                <p className="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-2 leading-snug">
+                <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors relative z-10 w-full truncate break-words whitespace-normal">{tool.title}</h3>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 line-clamp-2 mb-5 relative z-10 w-full break-words">
                   {tool.description}
                 </p>
+                <div className="mt-auto flex items-center text-indigo-600 dark:text-indigo-400 text-sm font-bold relative z-10">
+                  Open Tool →
+                </div>
               </Link>
             );
           })}

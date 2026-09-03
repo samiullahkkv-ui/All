@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { tools } from '../toolsData';
 import { ToolCategory } from '../types';
-import { Search, Heart } from 'lucide-react';
+import { Search, Heart, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ToolPicture } from './ToolPicture';
 
 interface ToolGridProps {
   favorites: string[];
@@ -13,8 +14,8 @@ interface ToolGridProps {
 export default function ToolGrid({ favorites, toggleFavorite, showFavoritesOnly }: ToolGridProps) {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<ToolCategory | 'All'>('All');
-
-  const categories: (ToolCategory | 'All')[] = ['All', 'Text Tools', 'Developer', 'Generators', 'Calculators', 'Converters', 'Media Tools', 'Document Tools', 'Web Tools'];
+  
+  const categories: (ToolCategory | 'All')[] = ['All', 'AI Tools', 'Text Tools', 'Developer', 'Generators', 'Calculators', 'Converters', 'Media Tools', 'Document Tools', 'Web Tools'];
 
   const filteredTools = tools.filter(tool => {
     const matchesSearch = tool.title.toLowerCase().includes(search.toLowerCase()) || 
@@ -35,13 +36,12 @@ export default function ToolGrid({ favorites, toggleFavorite, showFavoritesOnly 
             </div>
             <input
               type="text"
-              className="block w-full pl-11 pr-4 py-4 bg-white dark:bg-gray-800 border-2 border-transparent focus:border-indigo-500 dark:focus:border-indigo-400 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none transition-all text-gray-900 dark:text-white placeholder-gray-400 text-lg outline-none"
+              className="block w-full pl-11 pr-4 py-4 bg-white dark:bg-gray-800 border-2 border-transparent focus:border-indigo-500 dark:focus:border-indigo-400 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none transition-all text-gray-900 dark:text-white placeholder-gray-400 text-lg outline-none box-border min-w-0"
               placeholder="Search for a tool (e.g. Word Counter)..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-
           <div className="flex flex-wrap justify-center gap-2">
             {categories.map(cat => (
               <button
@@ -60,8 +60,8 @@ export default function ToolGrid({ favorites, toggleFavorite, showFavoritesOnly 
         </div>
       )}
 
-      {/* 3D Compact Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
+      {/* Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredTools.map(tool => {
           const Icon = tool.icon;
           const isFav = favorites.includes(tool.id);
@@ -70,29 +70,36 @@ export default function ToolGrid({ favorites, toggleFavorite, showFavoritesOnly 
             <Link
               key={tool.id}
               to={`/tools/${tool.id}`}
-              className="bg-white dark:bg-gray-800 rounded-3xl p-5 flex flex-col items-center justify-center text-center transition-all duration-300 border-b-4 border-gray-100 dark:border-gray-900 hover:border-indigo-500 dark:hover:border-indigo-400 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_-15px_rgba(99,102,241,0.5)] transform hover:-translate-y-2 cursor-pointer relative group"
+              className="bg-white dark:bg-gray-800 rounded-3xl p-4 sm:p-5 flex flex-col items-start transition-all duration-300 border-2 border-transparent hover:border-indigo-500 dark:border-gray-800 dark:hover:border-indigo-400 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(99,102,241,0.3)] transform hover:-translate-y-1 group relative overflow-hidden box-border min-w-0 w-full"
             >
-              <button 
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(tool.id); }}
-                className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors z-10"
-                title={isFav ? "Remove from favorites" : "Add to favorites"}
-              >
-                <Heart className={`w-4 h-4 transition-colors ${isFav ? 'fill-red-500 text-red-500' : 'text-gray-300 dark:text-gray-600 group-hover:text-red-300 dark:group-hover:text-red-400'}`} />
-              </button>
-              
-              <div className="w-14 h-14 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mb-3 shadow-[0_10px_20px_-10px_rgba(99,102,241,0.8)] border-t border-white/40 transform group-hover:scale-110 transition-transform duration-300">
-                <Icon className="w-7 h-7 text-white drop-shadow-md" />
+              {/* Tool Picture on Top */}
+              <div className="w-full relative mb-4">
+                <ToolPicture tool={tool} variant="card" className="h-40" />
+                <button 
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(tool.id); }}
+                  className="absolute top-3 right-3 p-2 rounded-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md hover:bg-white dark:hover:bg-gray-800 transition-colors z-20 shadow-sm"
+                  title={isFav ? "Remove from favorites" : "Add to favorites"}
+                  aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
+                >
+                  <Heart className={`w-4 h-4 transition-colors ${isFav ? 'fill-red-500 text-red-500' : 'text-gray-400 dark:text-gray-400 group-hover:text-red-400'}`} />
+                </button>
               </div>
               
-              <h3 className="font-bold text-gray-800 dark:text-gray-100 text-sm mb-1 leading-tight">{tool.title}</h3>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-2 leading-snug">
+              <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors relative z-10 w-full truncate break-words whitespace-normal">{tool.title}</h3>
+              
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 line-clamp-2 mb-5 relative z-10 w-full break-words">
                 {tool.description}
               </p>
+              
+              <div className="mt-auto flex items-center text-indigo-600 dark:text-indigo-400 text-sm font-bold relative z-10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all transform sm:translate-y-2 sm:group-hover:translate-y-0 duration-300">
+                Open Tool <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
             </Link>
           );
         })}
+
         {filteredTools.length === 0 && (
-          <div className="col-span-full py-20 text-center flex flex-col items-center">
+          <div className="col-span-full py-20 text-center flex flex-col items-center min-w-0">
             <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-3xl flex items-center justify-center mb-4">
               <Search className="w-10 h-10 text-gray-300 dark:text-gray-600" />
             </div>
